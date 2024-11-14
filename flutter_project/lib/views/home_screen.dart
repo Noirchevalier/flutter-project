@@ -1,37 +1,57 @@
-// lib/views/home_screen.dart
 import 'package:flutter/material.dart';
-import '../controllers/task_controller.dart';
 import 'package:provider/provider.dart';
+import '../providers/task_provider.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+
+    Provider.of<TaskProvider>(context, listen: false).loadTasks();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final taskController = Provider.of<TaskController>(context);
+    final taskProvider = Provider.of<TaskProvider>(context);
 
     return Scaffold(
-      appBar: AppBar(title: Text('To-Do List')),
-      body: FutureBuilder(
-        future: taskController.loadTasks(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator();
-          } else {
-            return ListView.builder(
-              itemCount: taskController.tasks.length,
-              itemBuilder: (context, index) {
-                final task = taskController.tasks[index];
+      appBar: AppBar(
+        title: Text('To-Do List'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.refresh),
+            onPressed: () {
+              taskProvider.loadTasks();
+            },
+          ),
+        ],
+      ),
+      body: taskProvider.isLoading
+          ? Center(child: CircularProgressIndicator())
+          : ListView.builder(
+              itemCount: taskProvider.tasks.length,
+              itemBuilder: (ctx, index) {
+                final task = taskProvider.tasks[index];
                 return ListTile(
                   title: Text(task.title),
-                  // Other UI elements for each task
+                  subtitle: Text(task.description ?? 'No description'),
+                  trailing: IconButton(
+                    icon: Icon(Icons.delete),
+                    onPressed: () {
+                      taskProvider.deleteTask(task.id);
+                    },
+                  ),
                 );
               },
-            );
-          }
-        },
-      ),
+            ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // Navigate to TaskFormScreen for adding a task
+          // Logic to add a new task
         },
         child: Icon(Icons.add),
       ),

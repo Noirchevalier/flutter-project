@@ -1,13 +1,12 @@
 import 'package:http/http.dart' as http;
 import '/models/task.dart';
 import 'dart:convert';
+import '/config/app_config.dart';
 
 class ApiService {
-  static const String apiUrl = 'http://your-laravel-api-url.com/api';
-
   // Fetch tasks from API
   Future<List<Task>> fetchTasks() async {
-    final response = await http.get(Uri.parse('$apiUrl/tasks'));
+    final response = await http.get(Uri.parse('${AppConfig.apiUrl}/tasks'));
 
     // Check if the server returned a successful response
     if (response.statusCode == 200) {
@@ -22,7 +21,7 @@ class ApiService {
   // Create a new task
   Future<Task> createTask(Task task) async {
     final response = await http.post(
-      Uri.parse('$apiUrl/tasks'),
+      Uri.parse('${AppConfig.apiUrl}/tasks'),
       headers: {'Content-Type': 'application/json'},
       body: json.encode(task.toMap()), // Send task as JSON
     );
@@ -39,7 +38,7 @@ class ApiService {
   // Update an existing task
   Future<void> updateTask(Task task) async {
     final response = await http.put(
-      Uri.parse('$apiUrl/tasks/${task.id}'),
+      Uri.parse('${AppConfig.apiUrl}/tasks/${task.id}'),
       headers: {'Content-Type': 'application/json'},
       body: json.encode(task.toMap()), // Send updated task as JSON
     );
@@ -51,7 +50,8 @@ class ApiService {
 
   // Delete a task
   Future<void> deleteTask(int id) async {
-    final response = await http.delete(Uri.parse('$apiUrl/tasks/$id'));
+    final response =
+        await http.delete(Uri.parse('${AppConfig.apiUrl}/tasks/$id'));
 
     if (response.statusCode != 200) {
       throw Exception('Failed to delete task');
