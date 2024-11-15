@@ -53,6 +53,7 @@ Testando Funcionalidades:
 Carregar Tarefas: Ao abrir o aplicativo, as tarefas serão carregadas automaticamente da API.
 Adicionar Tarefa: Clique no botão para adicionar uma nova tarefa, fornecendo o título e a descrição.
 Editar ou Excluir Tarefa: Selecione uma tarefa para editá-la ou excluí-la utilizando o ícone de lixeira.
+
 🔄 Melhorias Futuras
 Implementar autenticação para controlar o acesso e segurança das tarefas.
 Melhorar a interface com designs mais modernos e amigáveis.
