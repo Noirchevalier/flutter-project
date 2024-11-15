@@ -1,4 +1,4 @@
-import 'dart:convert'; // <-- Add this import to use json
+import 'dart:convert';
 
 class Task {
   final int id;
@@ -11,7 +11,6 @@ class Task {
     required this.description,
   });
 
-  // Factory constructor to create a Task from a map (for parsing API response)
   factory Task.fromMap(Map<String, dynamic> map) {
     return Task(
       id: map['id'],
@@ -20,7 +19,6 @@ class Task {
     );
   }
 
-  // Method to convert the Task into a map (for converting to JSON when sending data to the API)
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -29,8 +27,7 @@ class Task {
     };
   }
 
-  // Method to convert the Task into JSON string (useful when sending the task data)
   String toJson() {
-    return json.encode(toMap()); // This will now work because json is imported
+    return json.encode(toMap());
   }
 }

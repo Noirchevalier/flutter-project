@@ -1,17 +1,24 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:flutter_project/config/app_config.dart';
 
 class TaskService {
-  static const String apiUrl =
-      'http://192.168.1.5:8000/api/tasks'; // Use o seu IP local aqui
+  static const String apiUrl = AppConfig.apiUrl;
 
   Future<List<Task>> fetchTasks() async {
-    final response = await http.get(Uri.parse(apiUrl));
+    try {
+      final response = await http.get(Uri.parse(apiUrl));
 
-    if (response.statusCode == 200) {
-      List<dynamic> data = json.decode(response.body);
-      return data.map((task) => Task.fromJson(task)).toList();
-    } else {
+      if (response.statusCode == 200) {
+        List<dynamic> data = json.decode(response.body);
+        print('Resposta da API: $data');
+        return data.map((task) => Task.fromJson(task)).toList();
+      } else {
+        print('Falha na requisição: ${response.statusCode}');
+        throw Exception('Failed to load tasks');
+      }
+    } catch (e) {
+      print('Erro na requisição: $e');
       throw Exception('Failed to load tasks');
     }
   }
@@ -29,7 +36,6 @@ class TaskService {
     }
   }
 
-  // Editar tarefa
   Future<void> updateTask(Task task) async {
     final response = await http.put(
       Uri.parse('$apiUrl/${task.id}'),
@@ -42,7 +48,6 @@ class TaskService {
     }
   }
 
-  // Excluir tarefa
   Future<void> deleteTask(int id) async {
     final response = await http.delete(Uri.parse('$apiUrl/$id'));
 
@@ -61,7 +66,7 @@ class Task {
   factory Task.fromJson(Map<String, dynamic> json) {
     return Task(
       id: json['id'],
-      name: json['name'],
+      name: json['name'] ?? 'Unnamed Task',
     );
   }
 }

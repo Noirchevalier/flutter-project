@@ -11,13 +11,13 @@ class TaskProvider with ChangeNotifier {
 
   final ApiService _apiService = ApiService();
 
-  // Load tasks from the API
   Future<void> loadTasks() async {
     _isLoading = true;
     notifyListeners();
 
     try {
       _tasks = await _apiService.fetchTasks();
+      print('Loaded tasks: $_tasks');
     } catch (error) {
       print('Error loading tasks: $error');
     }
@@ -26,7 +26,6 @@ class TaskProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  // Add a new task
   Future<void> addTask(Task task) async {
     try {
       final newTask = await _apiService.createTask(task);
@@ -37,7 +36,6 @@ class TaskProvider with ChangeNotifier {
     }
   }
 
-  // Update an existing task
   Future<void> updateTask(Task task) async {
     try {
       await _apiService.updateTask(task);
@@ -51,7 +49,6 @@ class TaskProvider with ChangeNotifier {
     }
   }
 
-  // Delete a task
   Future<void> deleteTask(int id) async {
     try {
       await _apiService.deleteTask(id);

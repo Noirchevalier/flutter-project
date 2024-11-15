@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
-import 'task_service.dart'; // O código TaskService e Task
+import 'task_service.dart'; // Certifique-se de que esta importação está correta
 
 void main() {
-  runApp(MyApp());
+  runApp(MyApp()); // Inicia o aplicativo com MyApp
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: TaskList(),
+      title: 'Flutter To-Do List',
+      theme: ThemeData(primarySwatch: Colors.blue),
+      home:
+          TaskList(), // Aqui chamamos a TaskList para exibir a lista de tarefas
     );
   }
 }
@@ -25,55 +28,50 @@ class _TaskListState extends State<TaskList> {
   @override
   void initState() {
     super.initState();
-    futureTasks = TaskService().fetchTasks();
+    _reloadTasks(); // Carrega as tarefas quando a tela é iniciada
   }
 
-  // Função para atualizar a lista de tarefas
   void _reloadTasks() {
     setState(() {
-      futureTasks = TaskService().fetchTasks();
+      futureTasks = TaskService().fetchTasks(); // Atualiza a lista de tarefas
     });
   }
 
-  // Função para criar tarefa
   void _createTask(String name) async {
     Task newTask = Task(id: 0, name: name);
     try {
       await TaskService().createTask(newTask);
-      _reloadTasks();
+      _reloadTasks(); // Recarrega as tarefas após criar uma nova
     } catch (e) {
-      _showErrorDialog('Error creating task');
+      _showErrorDialog('Erro ao criar tarefa');
     }
   }
 
-  // Função para editar tarefa
   void _editTask(int id, String name) async {
     Task updatedTask = Task(id: id, name: name);
     try {
       await TaskService().updateTask(updatedTask);
-      _reloadTasks();
+      _reloadTasks(); // Recarrega as tarefas após editar uma existente
     } catch (e) {
-      _showErrorDialog('Error updating task');
+      _showErrorDialog('Erro ao atualizar tarefa');
     }
   }
 
-  // Função para excluir tarefa
   void _deleteTask(int id) async {
     try {
       await TaskService().deleteTask(id);
-      _reloadTasks();
+      _reloadTasks(); // Recarrega as tarefas após excluir uma
     } catch (e) {
-      _showErrorDialog('Error deleting task');
+      _showErrorDialog('Erro ao excluir tarefa');
     }
   }
 
-  // Função para exibir diálogos de erro
   void _showErrorDialog(String message) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Error'),
+          title: Text('Erro'),
           content: Text(message),
           actions: [
             TextButton(
@@ -98,9 +96,9 @@ class _TaskListState extends State<TaskList> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
+            return Center(child: Text('Erro: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(child: Text('No tasks available'));
+            return Center(child: Text('Nenhuma tarefa disponível'));
           } else {
             List<Task> tasks = snapshot.data!;
             return ListView.builder(
@@ -136,25 +134,24 @@ class _TaskListState extends State<TaskList> {
     );
   }
 
-  // Função para mostrar diálogo de criação de tarefa
   Future<String?> _showCreateDialog() async {
     TextEditingController controller = TextEditingController();
     return showDialog<String>(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Create New Task'),
+          title: Text('Criar Nova Tarefa'),
           content: TextField(
             controller: controller,
-            decoration: InputDecoration(hintText: 'Enter task name'),
+            decoration: InputDecoration(hintText: 'Digite o nome da tarefa'),
           ),
           actions: [
             TextButton(
-              child: Text('Cancel'),
+              child: Text('Cancelar'),
               onPressed: () => Navigator.of(context).pop(),
             ),
             TextButton(
-              child: Text('Create'),
+              child: Text('Criar'),
               onPressed: () {
                 Navigator.of(context).pop(controller.text);
               },
@@ -165,25 +162,25 @@ class _TaskListState extends State<TaskList> {
     );
   }
 
-  // Função para mostrar diálogo de edição de tarefa
   Future<String?> _showEditDialog(String currentName) async {
     TextEditingController controller = TextEditingController(text: currentName);
     return showDialog<String>(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Edit Task'),
+          title: Text('Editar Tarefa'),
           content: TextField(
             controller: controller,
-            decoration: InputDecoration(hintText: 'Enter new task name'),
+            decoration:
+                InputDecoration(hintText: 'Digite o novo nome da tarefa'),
           ),
           actions: [
             TextButton(
-              child: Text('Cancel'),
+              child: Text('Cancelar'),
               onPressed: () => Navigator.of(context).pop(),
             ),
             TextButton(
-              child: Text('Save'),
+              child: Text('Salvar'),
               onPressed: () {
                 Navigator.of(context).pop(controller.text);
               },
