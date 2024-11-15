@@ -7,12 +7,14 @@ Dart: Linguagem de programação utilizada no desenvolvimento do aplicativo.
 Provider: Gerenciador de estado que facilita a comunicação entre os widgets.
 HTTP: Biblioteca para realizar requisições HTTP e interagir com a API.
 Laravel: Framework PHP utilizado para construir a API RESTful que manipula as tarefas.
+
 🚀 Funcionalidades
 Listagem de Tarefas: Visualize todas as tarefas cadastradas, com título e descrição.
 Adicionar Tarefa: Crie novas tarefas, definindo um título e descrição.
 Editar Tarefa: Modifique as informações de tarefas já cadastradas.
 Excluir Tarefa: Remova tarefas que não são mais necessárias.
 Indicador de Carregamento: Durante o carregamento das tarefas, é exibido um indicador de progresso para o usuário.
+
 📂 Estrutura do Projeto
 /lib: Diretório principal que contém todos os arquivos do Flutter.
 /models: Define o modelo Task, que representa uma tarefa.
@@ -24,18 +26,17 @@ Indicador de Carregamento: Durante o carregamento das tarefas, é exibido um ind
 Clone o repositório:
 
 Abra o terminal e execute o comando abaixo para clonar o repositório:
-
-bash
-Copiar código
+```
 git clone https://github.com/seu-usuario/seu-repositorio.git
 cd seu-repositorio
+```
 Instale as dependências do Flutter:
 
 Certifique-se de que o Flutter esteja instalado corretamente em seu ambiente. Em seguida, rode o comando para instalar as dependências do projeto:
 
-bash
-Copiar código
+```
 flutter pub get
+```
 Configure a API (Back-end Laravel):
 
 Se ainda não tiver configurado a API, siga as instruções no repositório da API para configurar o ambiente, criar o banco de dados e rodar as migrations necessárias.
@@ -44,9 +45,9 @@ Execute o aplicativo Flutter:
 
 Conecte um dispositivo Android/iOS ou use o emulador e execute o aplicativo com o comando:
 
-bash
-Copiar código
+```
 flutter run
+```
 Testando Funcionalidades:
 
 Carregar Tarefas: Ao abrir o aplicativo, as tarefas serão carregadas automaticamente da API.
